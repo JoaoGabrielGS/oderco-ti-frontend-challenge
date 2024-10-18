@@ -22,12 +22,12 @@ export async function POST(req: Request) {
 
   if (file && file.size > 0) {
     const fileName = `${Date.now()}-${file.name}`;
-    const filePath = path.join(process.cwd(), 'public/uploads', fileName);
+    const filePath = path.join(process.cwd(), 'public/user-images', fileName);
 
     const buffer = Buffer.from(await file.arrayBuffer());
     await writeFile(filePath, buffer)
 
-    profileImgUrl = filePath;
+    profileImgUrl = `/user-images/${fileName}`;
   }
 
   const newUser = await prisma.user.create({

@@ -25,7 +25,6 @@ export function createPaged<T>(pageParams: PageParams, count: number, items: T[]
 }
 
 export function getPageParams(nextRequest: NextRequest): PageParams {
-  console.log(nextRequest)
   const page = Number(nextRequest.nextUrl.searchParams.get('page') ?? 0);
   const page_size = Number(nextRequest.nextUrl.searchParams.get('page_size') ?? 15);
   const skip = page * page_size;

@@ -18,3 +18,13 @@ model User {
   profileImgUrl String?
 }
 
+model Product {
+  id            Int     @id @default(autoincrement())
+  name          String
+  description   String
+  price         Float
+  category      String
+  createdAt     DateTime @default(now())
+  salesCount    Int      @default(0)
+  productImgUrl String?
+}

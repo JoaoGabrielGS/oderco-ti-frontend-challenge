@@ -58,8 +58,7 @@ export function CreateUserForm() {
       profileImage: profileImage || undefined,
     }).then(res => {
       if (res.ok) {
-        console.log(res)
-        toast({ title: "User registered successfully!", variant: 'success' });
+        toast({ title: "Usuário criado com sucesso!", variant: 'success' });
         form.reset();
         setProfileImage(null);
         return router.push('/login')
@@ -83,7 +82,6 @@ export function CreateUserForm() {
                 <FormControl>
                   <Input type="name" placeholder="Digite o nome de usuário..." {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -96,7 +94,6 @@ export function CreateUserForm() {
                 <FormControl>
                   <Input type="email" placeholder="Digite um email válido..." {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -109,7 +106,6 @@ export function CreateUserForm() {
                 <FormControl>
                   <Input type="text" placeholder="Digite a senha..." {...field} />
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />
@@ -124,11 +120,9 @@ export function CreateUserForm() {
                     <Input
                       type="file"
                       onChange={(e) => setProfileImage(e.target.files?.[0] || null)}
-                    // className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     />
                   </div>
                 </FormControl>
-                <FormMessage />
               </FormItem>
             )}
           />

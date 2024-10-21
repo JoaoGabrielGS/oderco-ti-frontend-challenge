@@ -6,9 +6,11 @@ import UserProfileMenu from "./userProfileMenu";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "./select";
 import { useEffect, useState } from "react";
 import { Button } from "./button";
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -36,6 +38,7 @@ import {
 } from "./pagination"
 
 export default function Catalog() {
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [orderBy, setOrderBy] = useState<'asc' | 'desc'>('asc');
   const [search, setSearch] = useState('');
@@ -135,7 +138,7 @@ export default function Catalog() {
               </TableCell>
 
               <TableCell>
-                {product.productImgUrl && <ProductImage img={product.productImgUrl} width={50} height={100} />}
+                <ProductImage img={product.productImgUrl} width={50} height={100} />
               </TableCell>
 
               <TableCell>{product.name}</TableCell>
@@ -159,7 +162,7 @@ export default function Catalog() {
             <PaginationPrevious onClick={() => setPage(page - 1)} />
           </PaginationItem>}
           {Array.from({ length: totalPages ?? 1 }, (_, index) => (
-            <PaginationItem key={index}>
+            <PaginationItem>
               <PaginationLink className={`cursor-pointer ${page === index ? 'bg-info text-white' : ''}`} onClick={() => setPage(index)}>{index + 1}</PaginationLink>
             </PaginationItem>
           ))}

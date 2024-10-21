@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import "../../globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: "Login",
@@ -17,9 +16,7 @@ export default function LoginLayout({
     <html lang="en">
       <body>
         <div className="w-full h-screen bg-background flex items-center justify-center">
-          <Suspense>
-            {children}
-          </Suspense>
+          {children}
           <Toaster />
         </div>
       </body>

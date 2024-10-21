@@ -1,7 +1,4 @@
-import { Linter } from 'eslint';
-
-/** @type {Linter.Config} */
-const config = {
+export default config = {
   extends: ['next/core-web-vitals', 'next/typescript'],
   rules: {
     '@typescript-eslint/no-explicit-any': 'off',
@@ -9,5 +6,3 @@ const config = {
     '@typescript-eslint/no-unused-vars': 'off',
   },
 };
-
-export default config;

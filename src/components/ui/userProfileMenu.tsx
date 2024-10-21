@@ -14,6 +14,7 @@ import {
 } from "./dropdown-menu"
 import React from "react";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "./skeleton";
 
 const UserProfileMenu = () => {
   const { data: session } = useSession();
@@ -39,11 +40,11 @@ const UserProfileMenu = () => {
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger>{userData?.profileImgUrl && <ProfileImage img={userData.profileImgUrl} />}</DropdownMenuTrigger>
+        <DropdownMenuTrigger>{userData?.profileImgUrl ? <ProfileImage img={userData.profileImgUrl} /> : <Skeleton className="w-[40px] h-[40px] rounded-full" />}</DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer" onClick={() => logOut}>Logout</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={() => logOut()}>Logout</DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/')}>Produtos</DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/product/catalog')}>Catálogo de Produtos</DropdownMenuItem>
         </DropdownMenuContent>

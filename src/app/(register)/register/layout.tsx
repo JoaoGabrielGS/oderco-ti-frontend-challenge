@@ -15,7 +15,7 @@ export default function RegisterLayout({
   return (
     <html lang="en">
       <body>
-        <div className="w-full h-screen bg-background flex items-center justify-center">
+        <div className="w-full h-screen bg-background flex flex-col gap-6 items-center justify-center">
           {children}
           <Toaster />
         </div>

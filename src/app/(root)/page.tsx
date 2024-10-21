@@ -11,7 +11,9 @@ export default async function Page() {
 
   const headerContent = (
     <>
-      <h1 className="flex-1">Aqui é onde ficar a logo: ODERCO GAMER</h1>
+      <div className="flex-1">
+        <img src="/logo/logo.png" alt="Logo" />
+      </div>
       <Cart />
       <div className="mt-2">
         <UserProfileMenu />

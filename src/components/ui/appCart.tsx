@@ -45,7 +45,9 @@ export default function AppCart() {
 
   const headerContent = (
     <>
-      <h1 className="flex-1">Aqui é onde ficar a logo: ODERCO GAMER</h1>
+      <div className="flex-1">
+        <img src="/logo/logo.png" alt="Logo" />
+      </div>
       <div className="mt-2">
         <UserProfileMenu />
       </div>
@@ -97,7 +99,7 @@ export default function AppCart() {
                 <p className="text-lg font-medium text-gray-600">Seu carrinho está vazio.</p>
                 <p className="text-sm text-gray-500">Adicione itens ao carrinho para prosseguir com a compra.</p>
                 <Button variant="info" className="uppercase text-sm !px-10" onClick={() => router.push('/')}>
-                  Voltar ao catálogo
+                  Voltar aos produtos
                 </Button>
               </div>
             )}

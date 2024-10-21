@@ -47,10 +47,10 @@ export default function ProductInfo() {
           {productId?.productImgUrl && <ProductImage img={productId.productImgUrl} width={250} height={250} />}
         </div>
         <div className="flex flex-col h-full gap-20 p-4">
-          <div className="flex-1">
-            <h1 className="text-info text-[30px] font-medium">R$ {productId?.price}</h1>
+          {productId && <div className="flex-1">
+            <h1 className="text-info text-[30px] font-medium">R$ {productId?.price.toFixed(2)}</h1>
             <p className="text-sm">*Frete grátis para compras aciam de R$ 900,00.</p>
-          </div>
+          </div>}
           {productId && <Button variant="info" className="!px-10 !py-8" onClick={() => addNewProductToCart(productId)}>
             <div className="flex items-center gap-2">
               <p className="uppercase">Adicionar ao carrinho</p>
@@ -60,7 +60,7 @@ export default function ProductInfo() {
         </div>
       </div>
       <div className="flex-1 overflow-hidden">
-        <h1 className="font-medium text-xl mb-4">Descrição</h1>
+        {productId && <h1 className="font-medium text-xl mb-4">Descrição</h1>}
         <p className="text-sm">{productId?.description}</p>
       </div>
     </div>

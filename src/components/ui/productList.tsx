@@ -28,6 +28,7 @@ const Products = () => {
   const [max, setMax] = useState<number>(10000);
   const [totalPages, setTotalPages] = useState<number>();
   const [page, setPage] = useState<number>(0)
+  const [search, setSearch] = useState('');
   const router = useRouter();
 
   function checkedChange(category: string, isChecked: boolean) {
@@ -74,11 +75,11 @@ const Products = () => {
   ], [])
 
   useEffect(() => {
-    ProductList({ page_size: 12, order: orderBy, category: Array.from(selectedCategories), minPrice: min, maxPrice: max, page: page, }).then(result => {
+    ProductList({ page_size: 12, order: orderBy, category: Array.from(selectedCategories), minPrice: min, maxPrice: max, page: page, search: search }).then(result => {
       setAllProducts(result.items);
       setTotalPages(result.total_pages);
     });
-  }, [orderBy, selectedCategories, min, max, page])
+  }, [orderBy, selectedCategories, min, max, page, search])
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
@@ -114,6 +115,15 @@ const Products = () => {
           </Card>
         </div>
         <ScrollArea className="flex-1 overflow-hidden">
+          <Input type="search" placeholder="O que você está buscando?" onChange={(e) => setSearch(e.currentTarget.value)} className="mb-4 !w-[30%]" />
+          {
+            allProducts.length === 0 && (
+              <div className="flex flex-col items-center justify-center text-center py-20">
+                <p className="text-lg font-semibold text-gray-500">Nenhum produto encontrado</p>
+                <p className="text-sm text-gray-400 mt-2">Tente ajustar os filtros ou pesquisar novamente</p>
+              </div>
+            )
+          }
           <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
             {allProducts.map(product => (
               product.isActive && (
@@ -137,8 +147,8 @@ const Products = () => {
             <PaginationPrevious onClick={() => setPage(page - 1)} />
           </PaginationItem>}
           {Array.from({ length: totalPages ?? 1 }, (_, index) => (
-            <PaginationItem>
-              <PaginationLink className={`cursor-pointer ${page === index + 1 ? 'bg-info text-white' : ''}`} onClick={() => setPage(index + 1)}>{index + 1}</PaginationLink>
+            <PaginationItem key={index}>
+              <PaginationLink className={`cursor-pointer ${page === index ? 'bg-info text-white' : ''}`} onClick={() => setPage(index + 1)}>{index + 1}</PaginationLink>
             </PaginationItem>
           ))}
           {(page < (totalPages ?? 1)) && <PaginationItem className="cursor-pointer">

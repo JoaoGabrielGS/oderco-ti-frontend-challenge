@@ -33,7 +33,11 @@ const formSchema = z.object({
   productImage: z.any(),
 })
 
-export function CreateProductForm() {
+interface CreateProductFormProps {
+  onProductCreated: () => void;
+}
+
+export function CreateProductForm({ onProductCreated }: CreateProductFormProps) {
   const [productImage, setProductImage] = useState<File | null>(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,7 +51,7 @@ export function CreateProductForm() {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
+  function onSubmit(data: z.infer<typeof formSchema>) {
     const formData = new FormData();
     formData.append('name', data.name);
     formData.append('description', data.description);
@@ -67,8 +71,9 @@ export function CreateProductForm() {
     }).then(res => {
       if (res.ok) {
         toast({ title: "Produto criado com sucesso! ", variant: 'success' });
-        form.reset()
+        form.reset();
         setProductImage(null);
+        onProductCreated(); // Chama a função para atualizar a lista de produtos
         return;
       }
 
@@ -77,8 +82,8 @@ export function CreateProductForm() {
         description: 'Algo deu errado, revise os campos por favor!',
         variant: 'destructive',
         action: <ToastAction altText="Tente novamente">Tudo bem</ToastAction>,
-      })
-    })
+      });
+    });
   }
 
   return (

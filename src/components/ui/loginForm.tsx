@@ -39,7 +39,7 @@ export default function LoginForm() {
 
   return (
     <Form {...form}>
-      <form {...form} onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField control={form.control} name="email" render={({ field }) => (
           <FormItem className="mb-8">
             <FormControl>

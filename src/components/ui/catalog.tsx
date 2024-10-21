@@ -6,11 +6,9 @@ import UserProfileMenu from "./userProfileMenu";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "./select";
 import { useEffect, useState } from "react";
 import { Button } from "./button";
-import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -38,7 +36,6 @@ import {
 } from "./pagination"
 
 export default function Catalog() {
-  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [orderBy, setOrderBy] = useState<'asc' | 'desc'>('asc');
   const [search, setSearch] = useState('');
@@ -62,6 +59,11 @@ export default function Catalog() {
 
   async function toggleIsActive(product: Product) {
     await UpdateProductById(product.id, { isActive: !product.isActive });
+    setProducts((prevProducts) =>
+      prevProducts.map((p) =>
+        p.id === product.id ? { ...p, isActive: !p.isActive } : p
+      )
+    );
   };
 
   const categoryTranslation: { [key: string]: string } = {
@@ -80,7 +82,9 @@ export default function Catalog() {
 
   const headerContent = (
     <>
-      <h1 className="flex-1">Aqui é onde ficar a logo: ODERCO GAMER</h1>
+      <div className="flex-1">
+        <img src="/logo/logo.png" alt="Logo" />
+      </div>
       <UserProfileMenu />
     </>
   );
@@ -109,7 +113,12 @@ export default function Catalog() {
               <DialogHeader>
                 <DialogTitle>Cadastrar Novo Produto</DialogTitle>
               </DialogHeader>
-              <CreateProductForm />
+              <CreateProductForm onProductCreated={() => {
+                ProductList({ order: orderBy, search: search, page: page, page_size: 8 }).then((res) => {
+                  setProducts(res.items);
+                  setTotalPages(res.total_pages);
+                });
+              }} />
             </DialogContent>
           </Dialog>
         </div>
@@ -138,7 +147,7 @@ export default function Catalog() {
               </TableCell>
 
               <TableCell>
-                <ProductImage img={product.productImgUrl} width={50} height={100} />
+                {product.productImgUrl && <ProductImage img={product.productImgUrl} width={50} height={100} />}
               </TableCell>
 
               <TableCell>{product.name}</TableCell>
@@ -156,13 +165,21 @@ export default function Catalog() {
           ))}
         </TableBody>
       </Table>
-      <Pagination>
+      {
+        products.length === 0 && (
+          <div className="flex flex-col items-center justify-center text-center py-20">
+            <p className="text-lg font-semibold text-gray-500">Nenhum produto encontrado</p>
+            <p className="text-sm text-gray-400 mt-2">Tente ajustar os filtros ou adicionar novos produtos</p>
+          </div>
+        )
+      }
+      {products.length > 0 && <Pagination>
         <PaginationContent>
           {page > 0 && <PaginationItem className="cursor-pointer">
             <PaginationPrevious onClick={() => setPage(page - 1)} />
           </PaginationItem>}
           {Array.from({ length: totalPages ?? 1 }, (_, index) => (
-            <PaginationItem>
+            <PaginationItem key={index}>
               <PaginationLink className={`cursor-pointer ${page === index ? 'bg-info text-white' : ''}`} onClick={() => setPage(index)}>{index + 1}</PaginationLink>
             </PaginationItem>
           ))}
@@ -170,7 +187,7 @@ export default function Catalog() {
             <PaginationNext onClick={() => setPage(page + 1)} />
           </PaginationItem>}
         </PaginationContent>
-      </Pagination>
+      </Pagination>}
     </AppPage>
   )
 }

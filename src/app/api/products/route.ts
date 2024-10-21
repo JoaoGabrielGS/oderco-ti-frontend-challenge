@@ -14,11 +14,10 @@ export async function POST(req: Request) {
   const description = formData.get('description') as string;
   const price = Number(formData.get('price'));
   const category = formData.get('category') as string;
-  const createdAt = new Date(formData.get('createdAt') as string);
   const salesCount = Number(formData.get('salesCount'));
   const file = formData.get('productImage') as File;
 
-  let productImageUrl = null;
+  let productImgUrl = null;
 
   if (file && file.size > 0) {
     const fileName = `procut-${file.name}`;
@@ -27,7 +26,7 @@ export async function POST(req: Request) {
     const buffer = Buffer.from(await file.arrayBuffer());
     await writeFile(filePath, buffer);
 
-    productImageUrl = `/product-images/${fileName}`;
+    productImgUrl = `/product-images/${fileName}`;
   }
 
   const newProduct = await prisma.product.create({
@@ -36,9 +35,8 @@ export async function POST(req: Request) {
       description,
       price,
       category,
-      createdAt,
       salesCount,
-      productImgUrl: productImageUrl,
+      productImgUrl,
     }
   })
 
@@ -48,14 +46,21 @@ export async function POST(req: Request) {
 //GET: Buscar todos os produtos
 export async function GET(req: NextRequest) {
   const pageParams = getPageParams(req);
+  const category = req.nextUrl.searchParams.getAll('category');
+  const minPrice = req.nextUrl.searchParams.get('minPrice');
+  const maxPrice = req.nextUrl.searchParams.get('maxPrice');
   const result = await pagedQuery(prisma.product, pageParams, {
     where: {
       name: {
         contains: req.nextUrl.searchParams.get('search') ?? undefined,
       },
       category: {
-        contains: req.nextUrl.searchParams.get('category') ?? undefined,
+        in: category.length > 0 ? category : undefined,
       },
+      price: {
+        gte: minPrice ? Number(minPrice) : undefined,
+        lte: maxPrice ? Number(maxPrice) : undefined,
+      }
     },
     orderBy: {
       createdAt: req.nextUrl.searchParams.get('order') === 'asc' ? 'asc' : 'desc',
@@ -63,23 +68,4 @@ export async function GET(req: NextRequest) {
   });
 
   return new Response(JSON.stringify(result), { status: 200 })
-}
-
-//PATH: Atualizar um produto
-export async function PATCH(req: Request) {
-  const { id, name, description, price, category, createdAt, salesCount } = await req.json();
-
-  const updateProduct = await prisma.product.update({
-    where: { id: Number(id) },
-    data: {
-      name,
-      description,
-      price,
-      category,
-      createdAt,
-      salesCount,
-    }
-  });
-
-  return new Response(JSON.stringify(updateProduct), { status: 200 });
 }

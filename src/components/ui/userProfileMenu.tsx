@@ -13,11 +13,12 @@ import {
   DropdownMenuTrigger,
 } from "./dropdown-menu"
 import React from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const UserProfileMenu = () => {
   const { data: session } = useSession();
   const [userData, setUserData] = useState<User | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const findUserById = async () => {
@@ -30,6 +31,11 @@ const UserProfileMenu = () => {
     findUserById();
   }, [session]);
 
+  function logOut() {
+    signOut();
+    router.push('/login');
+  }
+
   return (
     <div>
       <DropdownMenu>
@@ -37,7 +43,9 @@ const UserProfileMenu = () => {
         <DropdownMenuContent>
           <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer" onClick={() => signOut()}>Logout</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={() => logOut}>Logout</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/')}>Produtos</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/product/catalog')}>Catálogo de Produtos</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

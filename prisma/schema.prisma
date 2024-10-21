@@ -27,4 +27,5 @@ model Product {
   createdAt     DateTime @default(now())
   salesCount    Int      @default(0)
   productImgUrl String?
+  isActive      Boolean  @default(true)
 }

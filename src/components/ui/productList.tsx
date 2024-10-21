@@ -137,7 +137,7 @@ const Products = () => {
             <PaginationPrevious onClick={() => setPage(page - 1)} />
           </PaginationItem>}
           {Array.from({ length: totalPages ?? 1 }, (_, index) => (
-            <PaginationItem>
+            <PaginationItem key={index}>
               <PaginationLink className={`cursor-pointer ${page === index + 1 ? 'bg-info text-white' : ''}`} onClick={() => setPage(index + 1)}>{index + 1}</PaginationLink>
             </PaginationItem>
           ))}

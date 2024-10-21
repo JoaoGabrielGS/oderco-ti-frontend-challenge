@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient();
@@ -22,10 +23,9 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
 
 //PATH: Atualizar um produto
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
-  const formData = await req.formData(); // Coleta o FormData
+  const formData = await req.formData();
   const updateData: any = {};
 
-  // Extrair e adicionar os campos ao updateData
   if (formData.has('name')) updateData.name = formData.get('name');
   if (formData.has('description')) updateData.description = formData.get('description');
   if (formData.has('price')) updateData.price = Number(formData.get('price'));

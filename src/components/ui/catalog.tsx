@@ -135,7 +135,7 @@ export default function Catalog() {
               </TableCell>
 
               <TableCell>
-                <ProductImage img={product.productImgUrl} width={50} height={100} />
+                {product.productImgUrl && <ProductImage img={product.productImgUrl} width={50} height={100} />}
               </TableCell>
 
               <TableCell>{product.name}</TableCell>
